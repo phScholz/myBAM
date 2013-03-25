@@ -367,7 +367,15 @@ void bamWindow::saveFile(){
     input=ui->inputBox->toPlainText();
 
     text="#This is a myBAM settings-file\n";
-    text+=tt + "\n" + ett + "\n" + rdt + "\n" + erdt + "\n" + ct + "\n" + ect + "\n" + wt + "\n" + ewt + "\n"+hl + "\n" + ehl + "\n" + current + "\n";
+    text+="#\n";
+    text+="#N(Target)\tdN\trelLiveTime\tdrelLiveTime\tcountingTime\tdcountingTime\twaitingTime\tdwaitingTime\thalfLife\tdhalfLife\tcurrentpath\n";
+    text+=tt + "\t" + ett + "\t" + rdt + "\t" + erdt + "\t" + ct + "\t" + ect + "\t" + wt + "\t" + ewt + "\t"+hl + "\t" + ehl + "\t" + current + "\t";
+    text+="#\n#\n";
+    text+="#-------------------------------INPUT-------------------------------\n";
+    text+="#\n";
+    text+="#E\tdE\tI\tdI\tEff\tdEff\tCounts\tdCounts\n#\n";
+    text+=input;
+
 
     qDebug() << text;
 
@@ -376,14 +384,6 @@ void bamWindow::saveFile(){
     file.open(QIODevice::WriteOnly);
     file.write(text.toUtf8());
     file.close();
-
-    filename.append(".input");
-
-    QFile file2(filename);
-    file2.open(QIODevice::WriteOnly);
-    file2.write(input.toUtf8());
-    file2.close();
-
 }
 
 void bamWindow::loadFile(){
@@ -399,32 +399,32 @@ void bamWindow::loadFile(){
     while(!in.atEnd()){
 
         line=in.readLine().append("\n");
-        //if(!line.contains("#This is a myBAM settings-file")){
+        if(!(line.contains("#"))){
             text.append(line);
-        //}
+        }
     }
     qDebug() << text;
     file.close();
-    lines=text.split("\n");
+    lines=text.split("\n");                
 
     if(lines.size()>=11 && filename.contains(".myBAM") ){
 
-        ui->thickness->setValue(lines.at(1).toDouble());
-        ui->thicknessError->setValue(lines.at(2).toDouble());
+        ui->thickness->setValue(lines.at(0).toDouble());
+        ui->thicknessError->setValue(lines.at(1).toDouble());
 
-        ui->reltd->setValue(lines.at(3).toDouble());
-        ui->reltdError->setValue(lines.at(4).toDouble());
+        ui->reltd->setValue(lines.at(2).toDouble());
+        ui->reltdError->setValue(lines.at(3).toDouble());
 
-        ui->tm->setValue(lines.at(5).toDouble());
-        ui->tmError->setValue(lines.at(6).toDouble());
+        ui->tm->setValue(lines.at(4).toDouble());
+        ui->tmError->setValue(lines.at(5).toDouble());
 
-        ui->tw->setValue(lines.at(7).toDouble());
-        ui->twError->setValue(lines.at(8).toDouble());
+        ui->tw->setValue(lines.at(6).toDouble());
+        ui->twError->setValue(lines.at(7).toDouble());
 
-        ui->halflife->setValue(lines.at(9).toDouble());
-        ui->halflifeError->setValue(lines.at(10).toDouble());
+        ui->halflife->setValue(lines.at(8).toDouble());
+        ui->halflifeError->setValue(lines.at(9).toDouble());
 
-        ui->currentPath->setText(lines.at(11));
+        ui->currentPath->setText(lines.at(10));
     }
 
     filename.append(".input");

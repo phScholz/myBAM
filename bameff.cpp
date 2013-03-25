@@ -32,7 +32,7 @@ bamEff::bamEff(QObject *parent) :
 
             bamSource dummy;
             QDate date(2013,1,1);
-                if(values.at(i).size()==6){
+                if(values.at(i).size()>=6){
                     dummy.isotope=values.at(i).at(0);
                     dummy.number=values.at(i).at(1);
                     dummy.startActivity=values.at(i).at(4).toDouble()*1000;
