@@ -6,30 +6,40 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-TARGET = myBAM
+TARGET = ./bin/myBAM
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        bamwindow.cpp \
-    bamcore.cpp \
-    baminput.cpp \
-    bamconst.cpp \
-    qcustomplot.cpp \
-    bameff.cpp \
-    bamsource.cpp
+SOURCES += ./src/main.cpp\
+        ./src/bamwindow.cpp \
+    ./src/bamcore.cpp \
+    ./src/baminput.cpp \
+    ./src/bamconst.cpp \
+    ./src/qcustomplot.cpp \
+    ./src/bameff.cpp \
+    ./src/bamsource.cpp \
+    ./src/bamclover.cpp \
+    ./src/creatorwindow.cpp \
+    ./src/resultdialog.cpp
 
-HEADERS  += bamwindow.h \
-    bamcore.h \
-    baminput.h \
-    bamconst.h \
-    qcustomplot.h \
-    bameff.h \
-    bamsource.h
+HEADERS  += ./src/bamwindow.h \
+    ./src/bamcore.h \
+    ./src/baminput.h \
+    ./src/bamconst.h \
+    ./src/qcustomplot.h \
+    ./src/bameff.h \
+    ./src/bamsource.h \
+    ./src/bamclover.h \
+    ./src/creatorwindow.h \
+    ./src/resultdialog.h
 
-FORMS    += bamwindow.ui
+FORMS    += ./src/bamwindow.ui \
+    ./src/creatorwindow.ui \
+    ./src/resultdialog.ui
 
-RESOURCES += myBAM.qrc \
-    myBAM.qrc
+RESOURCES += ./src/myBAM.qrc \
+    ./src/myBAM.qrc
+
+OBJECTS_DIR =./obj
+UI_DIR = ./ui
+MOC_DIR= ./moc
