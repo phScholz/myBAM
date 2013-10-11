@@ -3,7 +3,7 @@
 #include <QFileDialog>
 #include "bamcore.h"
 #include <QDebug>
-#include "qcustomplot.h"
+//#include "qcustomplot.h"
 #include <QVector>
 #include <QComboBox>
 #include <QDate>
@@ -187,161 +187,161 @@ void bamWindow::resetInput(){
 
 void bamWindow::plotCurrent(){
 
-    ui->currentPlot->clearGraphs();
-    ui->currentPlot->setRangeDrag(Qt::Vertical|Qt::Horizontal);
-    ui->currentPlot->setRangeZoom(Qt::Vertical|Qt::Horizontal);
-    ui->currentPlot->xAxis->setRange(myBAM->myInput.currentTime.at(0),myBAM->myInput.currentTime.at(myBAM->myInput.currentTime.size()-1));
-    ui->currentPlot->xAxis->setLabel("Time elapsed [s]");
-    ui->currentPlot->yAxis->setLabel("Number of Particles");
-    ui->currentPlot->addGraph();
-    ui->currentPlot->graph(0)->setName("Target Current");
-    ui->currentPlot->graph(0)->setData(myBAM->myInput.currentTime, myBAM->myInput.currentCountdiff);
-    ui->currentPlot->graph(0)->setPen(QPen(Qt::darkGreen));
-    ui->currentPlot->rescaleAxes();
-    ui->currentPlot->replot();
+//    ui->currentPlot->clearGraphs();
+//    ui->currentPlot->setRangeDrag(Qt::Vertical|Qt::Horizontal);
+//    ui->currentPlot->setRangeZoom(Qt::Vertical|Qt::Horizontal);
+//    ui->currentPlot->xAxis->setRange(myBAM->myInput.currentTime.at(0),myBAM->myInput.currentTime.at(myBAM->myInput.currentTime.size()-1));
+//    ui->currentPlot->xAxis->setLabel("Time elapsed [s]");
+//    ui->currentPlot->yAxis->setLabel("Number of Particles");
+//    ui->currentPlot->addGraph();
+//    ui->currentPlot->graph(0)->setName("Target Current");
+//    ui->currentPlot->graph(0)->setData(myBAM->myInput.currentTime, myBAM->myInput.currentCountdiff);
+//    ui->currentPlot->graph(0)->setPen(QPen(Qt::darkGreen));
+//    ui->currentPlot->rescaleAxes();
+//    ui->currentPlot->replot();
 }
 
 void bamWindow::plotNprod(){
 
-    if(myBAM->myInput.NofT.size()>=1 && myBAM->myInput.NofT.size() <= myBAM->myInput.sigma.size()){
-        ui->nprodPlot->clearGraphs();
-        ui->nprodPlot->setRangeDrag(Qt::Vertical|Qt::Horizontal);
-        ui->nprodPlot->setRangeZoom(Qt::Vertical|Qt::Horizontal);
-        ui->nprodPlot->xAxis->setLabel("Time elapsed [s]");
-        ui->nprodPlot->yAxis->setLabel("Number of Nuclei");
+//    if(myBAM->myInput.NofT.size()>=1 && myBAM->myInput.NofT.size() <= myBAM->myInput.sigma.size()){
+//        ui->nprodPlot->clearGraphs();
+//        ui->nprodPlot->setRangeDrag(Qt::Vertical|Qt::Horizontal);
+//        ui->nprodPlot->setRangeZoom(Qt::Vertical|Qt::Horizontal);
+//        ui->nprodPlot->xAxis->setLabel("Time elapsed [s]");
+//        ui->nprodPlot->yAxis->setLabel("Number of Nuclei");
 
-        for(int i=0; i<1 /*myBAM->myInput.NofT.size()*/; i++){
-	    qDebug()<< "Plotting Graph " << i+1;
-            QString name;
-            name.setNum(myBAM->myInput.energy.at(i));
-            name+=" keV";
+//        for(int i=0; i<1 /*myBAM->myInput.NofT.size()*/; i++){
+//	    qDebug()<< "Plotting Graph " << i+1;
+//            QString name;
+//            name.setNum(myBAM->myInput.energy.at(i));
+//            name+=" keV";
 
-            switch(i){
-                case 0:
-                ui->nprodPlot->addGraph();
-                ui->nprodPlot->graph(i)->setName(name);
-                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(0));
-                ui->nprodPlot->graph(i)->setPen(QPen(Qt::red));
-                break;
+//            switch(i){
+//                case 0:
+//                ui->nprodPlot->addGraph();
+//                ui->nprodPlot->graph(i)->setName(name);
+//                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(0));
+//                ui->nprodPlot->graph(i)->setPen(QPen(Qt::red));
+//                break;
 
-                case 1:
-                ui->nprodPlot->addGraph();
-                ui->nprodPlot->graph(i)->setName(name);
-                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(i));
-                ui->nprodPlot->graph(i)->setPen(QPen(Qt::green));
-                break;
+//                case 1:
+//                ui->nprodPlot->addGraph();
+//                ui->nprodPlot->graph(i)->setName(name);
+//                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(i));
+//                ui->nprodPlot->graph(i)->setPen(QPen(Qt::green));
+//                break;
 
-                case 2:
-                ui->nprodPlot->addGraph();
-                ui->nprodPlot->graph(i)->setName(name);
-                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(i));
-                ui->nprodPlot->graph(i)->setPen(QPen(Qt::darkYellow));
-                break;
+//                case 2:
+//                ui->nprodPlot->addGraph();
+//                ui->nprodPlot->graph(i)->setName(name);
+//                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(i));
+//                ui->nprodPlot->graph(i)->setPen(QPen(Qt::darkYellow));
+//                break;
 
-                case 3:
-                ui->nprodPlot->addGraph();
-                ui->nprodPlot->graph(i)->setName(name);
-                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(i));
-                ui->nprodPlot->graph(i)->setPen(QPen(Qt::cyan));
-                break;
+//                case 3:
+//                ui->nprodPlot->addGraph();
+//                ui->nprodPlot->graph(i)->setName(name);
+//                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(i));
+//                ui->nprodPlot->graph(i)->setPen(QPen(Qt::cyan));
+//                break;
 
-                case 4:
-                ui->nprodPlot->addGraph();
-                ui->nprodPlot->graph(i)->setName(name);
-                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(i));
-                ui->nprodPlot->graph(i)->setPen(QPen(Qt::blue));
-                break;
+//                case 4:
+//                ui->nprodPlot->addGraph();
+//                ui->nprodPlot->graph(i)->setName(name);
+//                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(i));
+//                ui->nprodPlot->graph(i)->setPen(QPen(Qt::blue));
+//                break;
 
-                case 5:
-                ui->nprodPlot->addGraph();
-                ui->nprodPlot->graph(i)->setName(name);
-                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(i));
-                ui->nprodPlot->graph(i)->setPen(QPen(Qt::black));
-                break;
+//                case 5:
+//                ui->nprodPlot->addGraph();
+//                ui->nprodPlot->graph(i)->setName(name);
+//                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(i));
+//                ui->nprodPlot->graph(i)->setPen(QPen(Qt::black));
+//                break;
 
-                case 6:
-                ui->nprodPlot->addGraph();
-                ui->nprodPlot->graph(i)->setName(name);
-                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(i));
-                ui->nprodPlot->graph(i)->setPen(QPen(Qt::gray));
-                break;
-            }
-        }
+//                case 6:
+//                ui->nprodPlot->addGraph();
+//                ui->nprodPlot->graph(i)->setName(name);
+//                ui->nprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.NofT.at(i));
+//                ui->nprodPlot->graph(i)->setPen(QPen(Qt::gray));
+//                break;
+//            }
+//        }
 
-        ui->nprodPlot->rescaleAxes();
-        ui->nprodPlot->replot();
-    }
+//        ui->nprodPlot->rescaleAxes();
+//        ui->nprodPlot->replot();
+//    }
 }
 
 void bamWindow::plotDiffN(){
 
-    if(myBAM->myInput.NofT.size()>=1){
-        ui->diffNprodPlot->clearGraphs();
-        ui->diffNprodPlot->setRangeDrag(Qt::Vertical|Qt::Horizontal);
-        ui->diffNprodPlot->setRangeZoom(Qt::Vertical|Qt::Horizontal);
-        ui->diffNprodPlot->xAxis->setLabel("Time elapsed [s]");
-        ui->diffNprodPlot->yAxis->setLabel("Number of Nuclei");
+//    if(myBAM->myInput.NofT.size()>=1){
+//        ui->diffNprodPlot->clearGraphs();
+//        ui->diffNprodPlot->setRangeDrag(Qt::Vertical|Qt::Horizontal);
+//        ui->diffNprodPlot->setRangeZoom(Qt::Vertical|Qt::Horizontal);
+//        ui->diffNprodPlot->xAxis->setLabel("Time elapsed [s]");
+//        ui->diffNprodPlot->yAxis->setLabel("Number of Nuclei");
 
-        for(int i=0; i<myBAM->myInput.NofT.size(); i++){
-            QString name;
-            name.setNum(myBAM->myInput.energy.at(i));
-            name+=" keV";
+//        for(int i=0; i<myBAM->myInput.NofT.size(); i++){
+//            QString name;
+//            name.setNum(myBAM->myInput.energy.at(i));
+//            name+=" keV";
 
-            switch(i){
-                case 0:
-                ui->diffNprodPlot->addGraph();
-                ui->diffNprodPlot->graph(i)->setName(name);
-                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
-                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::red));
-                break;
+//            switch(i){
+//                case 0:
+//                ui->diffNprodPlot->addGraph();
+//                ui->diffNprodPlot->graph(i)->setName(name);
+//                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
+//                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::red));
+//                break;
 
-                case 1:
-                ui->diffNprodPlot->addGraph();
-                ui->diffNprodPlot->graph(i)->setName(name);
-                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
-                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::green));
-                break;
+//                case 1:
+//                ui->diffNprodPlot->addGraph();
+//                ui->diffNprodPlot->graph(i)->setName(name);
+//                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
+//                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::green));
+//                break;
 
-                case 2:
-                ui->diffNprodPlot->addGraph();
-                ui->diffNprodPlot->graph(i)->setName(name);
-                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
-                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::darkYellow));
-                break;
+//                case 2:
+//                ui->diffNprodPlot->addGraph();
+//                ui->diffNprodPlot->graph(i)->setName(name);
+//                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
+//                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::darkYellow));
+//                break;
 
-                case 3:
-                ui->diffNprodPlot->addGraph();
-                ui->diffNprodPlot->graph(i)->setName(name);
-                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
-                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::cyan));
-                break;
+//                case 3:
+//                ui->diffNprodPlot->addGraph();
+//                ui->diffNprodPlot->graph(i)->setName(name);
+//                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
+//                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::cyan));
+//                break;
 
-                case 4:
-                ui->diffNprodPlot->addGraph();
-                ui->diffNprodPlot->graph(i)->setName(name);
-                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
-                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::blue));
-                break;
+//                case 4:
+//                ui->diffNprodPlot->addGraph();
+//                ui->diffNprodPlot->graph(i)->setName(name);
+//                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
+//                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::blue));
+//                break;
 
-                case 5:
-                ui->diffNprodPlot->addGraph();
-                ui->diffNprodPlot->graph(i)->setName(name);
-                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
-                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::black));
-                break;
+//                case 5:
+//                ui->diffNprodPlot->addGraph();
+//                ui->diffNprodPlot->graph(i)->setName(name);
+//                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
+//                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::black));
+//                break;
 
-                case 6:
-                ui->diffNprodPlot->addGraph();
-                ui->diffNprodPlot->graph(i)->setName(name);
-                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
-                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::gray));
-                break;
-            }
-        }
+//                case 6:
+//                ui->diffNprodPlot->addGraph();
+//                ui->diffNprodPlot->graph(i)->setName(name);
+//                ui->diffNprodPlot->graph(i)->setData(myBAM->myInput.TfromN, myBAM->myInput.diffNofT.at(i));
+//                ui->diffNprodPlot->graph(i)->setPen(QPen(Qt::gray));
+//                break;
+//            }
+//        }
 
-        ui->diffNprodPlot->rescaleAxes();
-        ui->diffNprodPlot->replot();
-    }
+//        ui->diffNprodPlot->rescaleAxes();
+//        ui->diffNprodPlot->replot();
+//    }
 }
 
 void bamWindow::saveFile(){

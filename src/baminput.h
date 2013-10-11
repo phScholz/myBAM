@@ -68,6 +68,7 @@ public:
 
     QVector<double> sigma;
     QVector<double> errorSigma;
+    QVector<double> errorSigma2;
 
     QVector<double> phi;
     QVector<double> errorPhi;

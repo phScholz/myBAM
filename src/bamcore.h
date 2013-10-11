@@ -29,7 +29,6 @@ public slots:
 
 private:
     void readCurrent();
-    void calN_Target();
     void calPhi();
     void calN_Prod();
     void calSigma();

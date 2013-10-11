@@ -1,4 +1,4 @@
-#include "bamwindow.h"
+//#include "bamwindow.h"
 #include "bamcore.h"
 #include "creatorwindow.h"
 #include <QApplication>
@@ -20,9 +20,9 @@ int switchParameters(QString para){
         return 1;
     }
 
-    if(para=="-n" || para=="--normal"){
-        return 2;
-    }
+//    if(para=="-n" || para=="--normal"){
+//        return 2;
+//    }
 
     if(para=="-f" || para=="--file"){
         return 3;
@@ -43,7 +43,7 @@ int switchParameters(QString para){
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    bamWindow *w = new bamWindow;
+//    bamWindow *w = new bamWindow;
     creatorWindow *x = new creatorWindow;
 
     if(argc>1){
@@ -70,10 +70,10 @@ int main(int argc, char *argv[])
         }
     }
 
-    if(bamWin){
-        w->show();
-        return a.exec();
-    }
+//    if(bamWin){
+//        w->show();
+//        return a.exec();
+//    }
 
     if(creatorWin  || argc==1){
         x->show();
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
         x->calculate();
 
 
-        w->close();
+//        w->close();
         x->close();
         a.quit();
     }

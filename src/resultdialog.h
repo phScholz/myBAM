@@ -18,6 +18,7 @@ public:
 
 public slots:
     void showResults(QString text);
+    void exportResults();
 
 signals:
     void isOpened();

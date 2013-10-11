@@ -52,6 +52,7 @@ public slots:
         void calculate();
         void getInput();
         void resetInput();
+        void resetForm();
     
 private slots:
 

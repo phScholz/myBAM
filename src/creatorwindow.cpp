@@ -11,6 +11,8 @@
 #include "bamcore.h"
 #include "resultdialog.h"
 #include <QEventLoop>
+#include <cmath>
+#define debug
 
 creatorWindow::creatorWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -76,6 +78,40 @@ void creatorWindow::resetInput(){
         myBAM->myInput.NofT.clear();
 }
 
+void creatorWindow::resetForm(){
+
+    for (unsigned int j=0; j<ui->countingTable->rowCount(); j++){
+        for(int i=0; i<3; i++){
+            ui->countingTable->removeCellWidget(j,i);
+        }
+    }
+
+    for (unsigned int j=0; j<ui->peakTable->rowCount(); j++){
+        for(int i=0; i<7; i++){
+            ui->peakTable->removeCellWidget(j,i);
+        }
+    }
+
+    for (unsigned int j=0; j<ui->countingTable->rowCount(); j++){
+        for(int i=0; i<3; i++){
+            ui->countingTable->setItem(j,i, new QTableWidgetItem(""));
+        }
+    }
+
+    for (unsigned int j=0; j<ui->peakTable->rowCount(); j++){
+        for(int i=0; i<7; i++){
+            ui->peakTable->setItem(j,i, new QTableWidgetItem(""));
+        }
+    }
+
+    ui->halflifeValue->setText("");
+    ui->halflifeError->setText("");
+    ui->targetValue->setText("");
+    ui->targetError->setText("");
+    ui->pathLine->setText("");
+
+}
+
 void creatorWindow::getInput(){
 
     myBAM->myInput.targetThickness = ui->targetValue->text().toDouble()*1.0e15 ;
@@ -85,15 +121,16 @@ void creatorWindow::getInput(){
     myBAM->myInput.halfLife = ui->halflifeValue->text().toDouble();
     myBAM->myInput.errorHalfLife = ui->halflifeError->text().toDouble();
 
-    myBAM->myInput.currentFile = ui->pathLine->text();
+    myBAM->myInput.currentFile = ui->pathLine->text();    
 
     for(int i=0; i<5; i++){
         if(ui->countingTable->item(i,0)->text().toInt())
             myBAM->myInput.waitingT.push_back(ui->countingTable->item(i,0)->text().toDouble());
         if(ui->countingTable->item(i,1)->text().toInt())
             myBAM->myInput.countingT.push_back(ui->countingTable->item(i,1)->text().toDouble());
-        if(ui->countingTable->item(i,2)->text().toInt())
+        //if(ui->countingTable->item(i,2)->text().toInt())
             myBAM->myInput.relLifeT.push_back(ui->countingTable->item(i,2)->text().toDouble());
+        qDebug() << ui->countingTable->item(i,2)->text().toDouble();
     }
 
     for(int i=0; i<10; i++){
@@ -118,6 +155,22 @@ void creatorWindow::getInput(){
         if(ui->peakTable->item(i,6)->text().toInt())
             myBAM->myInput.errorPeakCounts.push_back(ui->peakTable->item(i,6)->text().toDouble());
     }
+
+#ifdef debug
+    qDebug() << "TargetThickness: " << myBAM->myInput.targetThickness << myBAM->myInput.errorTargetThickness;
+    qDebug() << "Half-Life: " << myBAM->myInput.halfLife<< myBAM->myInput.errorHalfLife;
+    qDebug() << "Current File: " << myBAM->myInput.currentFile;
+    qDebug() << "Counting:";
+    for(int i=0; i<myBAM->myInput.waitingT.size(); i++){
+        qDebug() << myBAM->myInput.waitingT.at(i) << myBAM->myInput.countingT.at(i) << myBAM->myInput.relLifeT.at(i);
+    }
+    qDebug() << "Peaks:";
+    for(int i=0; i<myBAM->myInput.energy.size(); i++){
+        qDebug() << myBAM->myInput.energy.at(i) << myBAM->myInput.gammaIntensity.at(i) << myBAM->myInput.errorGammaIntensity.at(i)
+                    << myBAM->myInput.absoluteEfficiency.at(i) << myBAM->myInput.errorAbsoluteEfficiency.at(i)
+                       << myBAM->myInput.peakCounts.at(i) << myBAM->myInput.errorPeakCounts.at(i);
+    }
+#endif
 
 }
 
@@ -148,11 +201,12 @@ void creatorWindow::displayResults(){
 
 void creatorWindow::sendResults(){
     qDebug() << "Sending Results ...";
-    QString energy,cross, line, dcross, mittel, dmittel, text;
-    double av, dav, sumSigmas, varIntern, varExtern;
+    QString energy,cross, line, dcross, dcross2, mittel, dmittel,dmittel2, text;
+    double av, dav, dav2, sumSigmas, varIntern, varExtern;
 
     av=0;
     dav=0;
+    dav2=0;
     text="";
     sumSigmas=0;
     varIntern=0;
@@ -165,22 +219,28 @@ void creatorWindow::sendResults(){
         cross.setNum(myBAM->myInput.sigma.at(i));
 
         dcross.setNum(myBAM->myInput.errorSigma.at(i));
+        dcross2.setNum(myBAM->myInput.errorSigma2.at(i));
 
-        line=energy +" keV:\t" + cross + "   +/-   " + dcross;
+        line=energy +" keV:\t" + cross + "   +/-   " + dcross + "   +/-   "+dcross2;
 
         av+=myBAM->myInput.sigma.at(i)/myBAM->myInput.errorSigma.at(i);
         sumSigmas+=1/myBAM->myInput.errorSigma.at(i);
 
-        dav+=myBAM->myInput.errorSigma.at(i)/myBAM->myInput.sigma.size();
+        dav+=pow(myBAM->myInput.errorSigma.at(i)/myBAM->myInput.sigma.at(i),2);
+        dav2+=pow(myBAM->myInput.errorSigma2.at(i)/myBAM->myInput.sigma.at(i),2);
         text+=line+"\n";
     }
+    dav=sqrt(dav)*av/sumSigmas/myBAM->myInput.sigma.size();
+    dav2=sqrt(dav2)*av/sumSigmas/myBAM->myInput.sigma.size();
     text+="--------------------------\n";
     mittel.setNum(av/sumSigmas);
     dmittel.setNum(dav);
-    text+="Average:\t" + mittel + "  +/-  " + dmittel;
+    dmittel2.setNum(dav2);
+
+    text+="Average:\t" + mittel + "  +/-  " + dmittel + "  +/-  " + dmittel2;
 
     //system("clear");
-    qDebug() << "Energy\t\tValue\t\tError";
+    qDebug() << "Energy\t\tValue\t\tError stat\t\tsys";
     qDebug() << "\n"+text+"\n";
 
     if(!file){    emit results(text);}
@@ -202,11 +262,24 @@ void creatorWindow::browseCurrent(){
 }
 
 void creatorWindow::loadFile(){
+    resetForm();
     loadFileName = QFileDialog::getOpenFileName(this, tr("Getting a myBAM-input file"), tr("./"), tr("*.myBAM"));
+    resetInput();
     loadInput();
+
 }
 
 void creatorWindow::loadInput(){
+    waitingTime.clear();
+    relativeLifeTime.clear();
+    energy.clear();
+    intensity.clear();
+    intensityError.clear();
+    countingTime.clear();
+    peakCounts.clear();
+    peakCountsError.clear();
+    efficiency.clear();
+    efficiencyError.clear();
 
     QFile file(loadFileName);
 
@@ -304,18 +377,22 @@ void creatorWindow::loadInput(){
                     }
                 }
 
+                //Reading peak table ...
+
                 for(int i=0; i<10; i++){
                     QString name;
                     name="energy"+QString::number(i+1);
                     if(xml.name()==name){
                         xml.readNext();
                         if(xml.tokenType()==QXmlStreamReader::Characters){
-                            energy.push_back(xml.text().toString());
+                            energy.push_back(xml.text().toString());                            
                             ui->peakTable->item(i,0)->setText(energy.at(i));
                             xml.readNext();
                         }
                     }
                 }
+
+
 
                 for(int i=0; i<10; i++){
                     QString name;
@@ -330,6 +407,8 @@ void creatorWindow::loadInput(){
                     }
                 }
 
+
+
                 for(int i=0; i<10; i++){
                     QString name;
                     name="intensityError"+QString::number(i+1);
@@ -342,6 +421,7 @@ void creatorWindow::loadInput(){
                         }
                     }
                 }
+
 
                 for(int i=0; i<10; i++){
                     QString name;
@@ -392,7 +472,7 @@ void creatorWindow::loadInput(){
                             ui->peakTable->item(i,6)->setText(peakCountsError.at(i));
                             xml.readNext();
                         }
-                    }
+                    }                    
                 }
 
                 if(xml.name()=="currentFileName"){

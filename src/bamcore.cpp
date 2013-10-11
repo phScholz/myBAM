@@ -4,7 +4,7 @@
 #include <QStringList>
 #include <math.h>
 #include <QDebug>
-//#define DEBUG
+#define DEBUG
 
 bamCore::bamCore(QObject *parent) :
     QObject(parent)
@@ -13,27 +13,27 @@ bamCore::bamCore(QObject *parent) :
 }
 
 void bamCore::beginCal(){
-    if(calMode=="normal"){
-        qDebug() << "readCurrent()";
-        readCurrent();
-        emit setProgressBar(20);
-        //calN_Target();
-        emit setProgressBar(36);
-        qDebug() << "calPhi()";
-        calPhi();
-        emit setProgressBar(52);
-        qDebug() << "calN_Prod()";
-        calN_Prod();
-        emit setProgressBar(68);
-        qDebug() << "calSigma()";
-        calSigma();
-        emit setProgressBar(84);
-        qDebug() << "calNofT()";
-        //calNofT();
-        emit setProgressBar(100);
+//    if(calMode=="normal"){
+//        qDebug() << "readCurrent()";
+//        readCurrent();
+//        emit setProgressBar(20);
+//        //calN_Target();
+//        emit setProgressBar(36);
+//        qDebug() << "calPhi()";
+//        calPhi();
+//        emit setProgressBar(52);
+//        qDebug() << "calN_Prod()";
+//        calN_Prod();
+//        emit setProgressBar(68);
+//        qDebug() << "calSigma()";
+//        calSigma();
+//        emit setProgressBar(84);
+//        qDebug() << "calNofT()";
+//        //calNofT();
+//        emit setProgressBar(100);
 
-        emit finished();
-    }
+//        emit finished();
+//    }
 
     if(calMode=="creator"){
         qDebug() << "Read Current ...";
@@ -106,17 +106,6 @@ void bamCore::readCurrent(){
     emit CurrentFinished();
 }
 
-void bamCore::calN_Target(){
-#ifdef DEBUG
-    qDebug() << "\nTarget Thickness:"<< myInput.targetThickness;
-    qDebug() << "\nNumber of Target Nuclei:";
-#endif
-    myInput.N_Target=myInput.targetThickness * myInput.targetArea / myInput.molMass * myConst.avogadro;
-#ifdef DEBUG
-    qDebug() << myInput.N_Target;
-#endif
-    emit N_TargetFinished();
-}
 
 void bamCore::calPhi(){
 #ifdef DEBUG
@@ -147,28 +136,28 @@ void bamCore::calPhi(){
 void bamCore::calN_Prod(){
     qDebug() << "calN_Prod()";
 
-    if(calMode=="normal"){
-        qDebug() << "normal Mode";
-        qDebug() << "\n Number of produced nuclei:";
+//    if(calMode=="normal"){
+//        qDebug() << "normal Mode";
+//        qDebug() << "\n Number of produced nuclei:";
 
-        for(int i=0; i<myInput.energy.size(); i++){
+//        for(int i=0; i<myInput.energy.size(); i++){
 
-            double dummy;
-            double errorDummy;
+//            double dummy;
+//            double errorDummy;
 
-            dummy=(myInput.peakCounts.at(i) * exp((log(2)/myInput.halfLife) * myInput.waitingTime))/(myInput.absoluteEfficiency.at(i) * myInput.gammaIntensity.at(i) * myInput.relativeDeadTime * (1-exp(-1.0 * (log(2)/myInput.halfLife) * myInput.countingTime)));
-            errorDummy=dummy*sqrt(pow(myInput.errorGammaIntensity.at(i)/myInput.gammaIntensity.at(i),2) + pow(myInput.errorAbsoluteEfficiency.at(i)/myInput.absoluteEfficiency.at(i),2)+pow(myInput.errorRelativeDeadTime/myInput.relativeDeadTime,2)
-                              +pow(log(2)*myInput.errorWaitingTime/myInput.halfLife,2)+pow(log(2)/myInput.halfLife*exp(-log(2)/myInput.halfLife*myInput.countingTime)/(1-exp(-log(2)/myInput.halfLife*myInput.countingTime))*myInput.errorCountingTime,2)
-                              +pow(log(2)/pow(myInput.halfLife,2)*(myInput.waitingTime + exp(-log(2)/myInput.halfLife*myInput.countingTime)/(1-exp(-log(2)/myInput.halfLife*myInput.countingTime))) * myInput.errorHalfLife,2));
+//            dummy=(myInput.peakCounts.at(i) * exp((log(2)/myInput.halfLife) * myInput.waitingTime))/(myInput.absoluteEfficiency.at(i) * myInput.gammaIntensity.at(i) * myInput.relativeDeadTime * (1-exp(-1.0 * (log(2)/myInput.halfLife) * myInput.countingTime)));
+//            errorDummy=dummy*sqrt(pow(myInput.errorGammaIntensity.at(i)/myInput.gammaIntensity.at(i),2) + pow(myInput.errorAbsoluteEfficiency.at(i)/myInput.absoluteEfficiency.at(i),2)+pow(myInput.errorRelativeDeadTime/myInput.relativeDeadTime,2)
+//                              +pow(log(2)*myInput.errorWaitingTime/myInput.halfLife,2)+pow(log(2)/myInput.halfLife*exp(-log(2)/myInput.halfLife*myInput.countingTime)/(1-exp(-log(2)/myInput.halfLife*myInput.countingTime))*myInput.errorCountingTime,2)
+//                              +pow(log(2)/pow(myInput.halfLife,2)*(myInput.waitingTime + exp(-log(2)/myInput.halfLife*myInput.countingTime)/(1-exp(-log(2)/myInput.halfLife*myInput.countingTime))) * myInput.errorHalfLife,2));
 
-            qDebug() << dummy;
+//            qDebug() << dummy;
 
-            myInput.N_Prod.push_back(dummy);
-            myInput.errorN_Prod.push_back(errorDummy);
-        }
+//            myInput.N_Prod.push_back(dummy);
+//            myInput.errorN_Prod.push_back(errorDummy);
+//        }
 
-        emit N_ProdFinished();
-    }
+//        emit N_ProdFinished();
+//    }
 
     if(calMode=="creator"){
 
@@ -191,12 +180,25 @@ void bamCore::calN_Prod(){
             }
 
             double counts=0;
+            double errorCounts=0;
 
 //            for(int j=0; j<myInput.peakCounts.size(); j++){
 
-                counts+=myInput.peakCounts.at(i);
-                qDebug() << counts;
-//          }
+            counts+=myInput.peakCounts.at(i);
+            errorCounts+=myInput.errorPeakCounts.at(i);
+            qDebug() << counts;
+            double relLife=0;
+            int m=0;
+            for(int k=0; k< myInput.relLifeT.size(); k++){
+                if(myInput.relLifeT.at(k)){
+                    m++;
+                    relLife+=myInput.relLifeT.at(k);
+                }
+            }
+            relLife/=m;
+            qDebug() << relLife;
+            counts/=relLife/100;
+        //}
 
             double dummy;
             double errorDummy;
@@ -205,7 +207,7 @@ void bamCore::calN_Prod(){
             qDebug() << myInput.gammaIntensity.at(i);
 #endif
             dummy=counts/(myInput.absoluteEfficiency.at(i)*myInput.gammaIntensity.at(i)*facA);
-            errorDummy=0;
+            errorDummy=dummy*sqrt(pow(errorCounts/counts,2)+pow(myInput.errorAbsoluteEfficiency.at(i)/myInput.absoluteEfficiency.at(i),2)+pow(myInput.errorGammaIntensity.at(i)/myInput.gammaIntensity.at(i),2));
 #ifdef DEBUG
             qDebug() << dummy;
 #endif
@@ -234,27 +236,32 @@ void bamCore::calSigma(){
 
 
         for(int j=0; j< myInput.phi.size(); j++){
-            if(j){
+            if(j){                
                 X*=exp(-1.0 * (log(2.0)/myInput.halfLife) * (myInput.currentTime.at(j)-myInput.currentTime.at(j-1)));
+                errorX+=myInput.errorPhi.at(j)*(1 - exp(-1.0 * (log(2.0)/myInput.halfLife) * (myInput.currentTime.at(j)-myInput.currentTime.at(j-1))));
                 X+=(myInput.phi.at(j) * (1 - exp(-1.0 * (log(2.0)/myInput.halfLife) * (myInput.currentTime.at(j)-myInput.currentTime.at(j-1)))));
             }
             else{
+                errorX+=myInput.errorPhi.at(j)* (1 - exp(-1.0 * (log(2.0)/myInput.halfLife) * myInput.currentTime.at(j)));
                 X+= (myInput.phi.at(j) * (1 - exp(-1.0 * (log(2.0)/myInput.halfLife) * myInput.currentTime.at(j))));
             }
-        }        
+        }
+
         X*= myInput.targetThickness/ (log(2.0)/myInput.halfLife);
+        errorX*=myInput.targetThickness/ (log(2.0)/myInput.halfLife);
 
 #ifdef DEBUG
-        qDebug() << "Number of Target nuclei" << myInput.targetThickness;
-        qDebug() << "Half Life:" << myInput.halfLife;
-        qDebug() << "\nX value:" << X;
         qDebug() << "\nproduced nuclei:" << myInput.N_Prod.at(i);
 #endif
 
         myInput.sigma.push_back(myInput.N_Prod.at(i)/X);
-        myInput.errorSigma.push_back(myInput.N_Prod.at(i)/X * sqrt(pow(myInput.errorN_Prod.at(i)/myInput.N_Prod.at(i), 2)+pow(myInput.errorTargetThickness/myInput.targetThickness,2)+pow(myInput.errorHalfLife/myInput.halfLife,2)));
+        myInput.errorSigma.push_back(myInput.N_Prod.at(i)/X *(myInput.errorN_Prod.at(i)/myInput.N_Prod.at(i)));
+        myInput.errorSigma2.push_back(myInput.N_Prod.at(i)/X*(myInput.errorTargetThickness/myInput.targetThickness + myInput.errorHalfLife/myInput.halfLife+errorX/X));
 #ifdef DEBUG
         qDebug() << "Cross Section:" << myInput.N_Prod.at(i)/X;
+        qDebug()<< "Target thickness: " << myInput.targetThickness << myInput.errorTargetThickness;
+        qDebug()<< "half life:: " << myInput.halfLife << myInput.errorHalfLife;
+        qDebug()<< "X-value " << X << errorX;
 #endif
     }
 
@@ -262,57 +269,53 @@ void bamCore::calSigma(){
 }
 
 void bamCore::calNofT(){
-    QVector<double> dummy, dummy2;
-    double X=0;
-    for(int i = 0; i< myInput.N_Prod.size(); i++){
-        dummy2.push_back(0);
-        X=0;
+//    QVector<double> dummy, dummy2;
+//    double X=0;
+//    for(int i = 0; i< myInput.N_Prod.size(); i++){
+//        dummy2.push_back(0);
+//        X=0;
 
-        for(int j=0; j<myInput.phi.size();j++){
-            if(!j){
-                X+=(myInput.phi.at(j) * (1 - exp(-1 * (log(2)/myInput.halfLife) * myInput.currentTime.at(j))) * myInput.targetThickness * myInput.sigma.at(i))/ (log(2)/myInput.halfLife);
-            }
-            else{
-                X*=exp(-1.0 * (log(2.0)/myInput.halfLife) * (myInput.currentTime.at(j)-myInput.currentTime.at(j-1)));
-                X+= (myInput.phi.at(j) * (1 - exp(-1 * (log(2)/myInput.halfLife) * (myInput.currentTime.at(j)-myInput.currentTime.at(j-1)))) * myInput.targetThickness * myInput.sigma.at(i))/ (log(2)/myInput.halfLife);
-            }
+//        for(int j=0; j<myInput.phi.size();j++){
+//            if(!j){
+//                X+=(myInput.phi.at(j) * (1 - exp(-1 * (log(2)/myInput.halfLife) * myInput.currentTime.at(j))) * myInput.targetThickness * myInput.sigma.at(i))/ (log(2)/myInput.halfLife);
+//            }
+//            else{
+//                X*=exp(-1.0 * (log(2.0)/myInput.halfLife) * (myInput.currentTime.at(j)-myInput.currentTime.at(j-1)));
+//                X+= (myInput.phi.at(j) * (1 - exp(-1 * (log(2)/myInput.halfLife) * (myInput.currentTime.at(j)-myInput.currentTime.at(j-1)))) * myInput.targetThickness * myInput.sigma.at(i))/ (log(2)/myInput.halfLife);
+//            }
 
-            dummy.push_back(X);
+//            dummy.push_back(X);
+//          }
 
-            /*if(j){
-                dummy2.push_back(dummy.at(j)-dummy.at(j-1));
-            }*/
-        }
-
-        myInput.NofT.push_back(dummy);
-        //myInput.diffNofT.push_back(dummy2);
-        dummy.clear();
-        dummy2.clear();
+//        myInput.NofT.push_back(dummy);
+//        //myInput.diffNofT.push_back(dummy2);
+//        dummy.clear();
+//        dummy2.clear();
 
 
-        for(int k=0; k<myInput.currentTime.size(); k++){
-            myInput.TfromN.push_back(myInput.currentTime.at(k));
-        }
+//        for(int k=0; k<myInput.currentTime.size(); k++){
+//            myInput.TfromN.push_back(myInput.currentTime.at(k));
+//        }
         
-    }
+//    }
     
 
-    int stop=myInput.phi.size()-1;
+//    int stop=myInput.phi.size()-1;
 
-    for(int m = 0 ; m< myInput.N_Prod.size(); m++){
-        myInput.diffNofT.at(m).push_back(0);
-        for(int i=0; i< 2*(myInput.waitingTime+myInput.countingTime)/2000; i++){
-		double Nnew=myInput.NofT.at(m).at(stop+i)*exp(-1*(log(2)*2000/myInput.halfLife));
-                myInput.NofT.at(m).push_back(Nnew);
-                /*if(i){
-                    myInput.diffNofT.at(m).push_back(myInput.NofT.at(m).at(stop+i+1)-myInput.NofT.at(m).at(stop+i));
-                }*/
+//    for(int m = 0 ; m< myInput.N_Prod.size(); m++){
+//        myInput.diffNofT.at(m).push_back(0);
+//        for(int i=0; i< 2*(myInput.waitingTime+myInput.countingTime)/2000; i++){
+//		double Nnew=myInput.NofT.at(m).at(stop+i)*exp(-1*(log(2)*2000/myInput.halfLife));
+//                myInput.NofT.at(m).push_back(Nnew);
+//                /*if(i){
+//                    myInput.diffNofT.at(m).push_back(myInput.NofT.at(m).at(stop+i+1)-myInput.NofT.at(m).at(stop+i));
+//                }*/
 
-                if(!m){
-                    myInput.TfromN.push_back(myInput.TfromN.at(stop+i)+2000);
-                }
-        }
-    }   
+//                if(!m){
+//                    myInput.TfromN.push_back(myInput.TfromN.at(stop+i)+2000);
+//                }
+//        }
+//    }
 }
 
 double bamCore::activity(int days, double act, double halflife){
@@ -322,7 +325,7 @@ double bamCore::activity(int days, double act, double halflife){
 #ifdef DEBUG
     qDebug() << "bamCore: value: " << -log(2)/halflife * (double) days/365.25;
     qDebug() << "bamCore: halflife: " << halflife << " years";
-    qebug() << "bamCore: New Activity: " << ac << " Bq";
+    qDebug() << "bamCore: New Activity: " << ac << " Bq";
 #endif
 
     return ac;

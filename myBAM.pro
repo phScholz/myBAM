@@ -15,7 +15,6 @@ SOURCES += ./src/main.cpp\
     ./src/bamcore.cpp \
     ./src/baminput.cpp \
     ./src/bamconst.cpp \
-    ./src/qcustomplot.cpp \
     ./src/bameff.cpp \
     ./src/bamsource.cpp \
     ./src/bamclover.cpp \
@@ -26,7 +25,6 @@ HEADERS  += ./src/bamwindow.h \
     ./src/bamcore.h \
     ./src/baminput.h \
     ./src/bamconst.h \
-    ./src/qcustomplot.h \
     ./src/bameff.h \
     ./src/bamsource.h \
     ./src/bamclover.h \

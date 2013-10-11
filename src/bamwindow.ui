@@ -138,31 +138,21 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>98</width>
-         <height>28</height>
+         <width>401</width>
+         <height>280</height>
         </rect>
        </property>
        <attribute name="label">
         <string>Current Plot</string>
        </attribute>
-       <widget class="QCustomPlot" name="currentPlot" native="true">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>381</width>
-          <height>231</height>
-         </rect>
-        </property>
-       </widget>
       </widget>
       <widget class="QWidget" name="page_5">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>98</width>
-         <height>28</height>
+         <width>401</width>
+         <height>280</height>
         </rect>
        </property>
        <attribute name="label">
@@ -184,31 +174,11 @@
          <attribute name="title">
           <string>N(t)</string>
          </attribute>
-         <widget class="QCustomPlot" name="nprodPlot" native="true">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>10</y>
-            <width>361</width>
-            <height>211</height>
-           </rect>
-          </property>
-         </widget>
         </widget>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
           <string>dN(t)</string>
          </attribute>
-         <widget class="QCustomPlot" name="diffNprodPlot" native="true">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>10</y>
-            <width>351</width>
-            <height>211</height>
-           </rect>
-          </property>
-         </widget>
         </widget>
        </widget>
       </widget>
@@ -569,8 +539,8 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>98</width>
-         <height>28</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <attribute name="label">
@@ -633,8 +603,8 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>98</width>
-         <height>28</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1078,7 +1048,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>853</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="font">
@@ -1152,14 +1122,6 @@ p, li { white-space: pre-wrap; }
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>QCustomPlot</class>
-   <extends>QWidget</extends>
-   <header>qcustomplot.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="myBAM.qrc"/>
  </resources>
