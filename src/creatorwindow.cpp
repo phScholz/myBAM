@@ -112,6 +112,7 @@ void creatorWindow::resetInput(){
 
         myBAM->myInput.sigma.clear();
         myBAM->myInput.errorSigma.clear();
+        myBAM->myInput.errorSigma2.clear();
         myBAM->myInput.N_Prod.clear();
         myBAM->myInput.errorN_Prod.clear();
         myBAM->myInput.NofT.clear();
@@ -260,7 +261,7 @@ void creatorWindow::sendResults(){
         dcross.setNum(myBAM->myInput.errorSigma.at(i));
         dcross2.setNum(myBAM->myInput.errorSigma2.at(i));
 
-        line=energy +" keV:\t" + cross + "   +/-   " + dcross + "   +/-   "+dcross2;
+        line=energy +" keV:\t" + cross + "\t " + dcross + "\t "+dcross2;
 
         av+=myBAM->myInput.sigma.at(i)/myBAM->myInput.errorSigma.at(i);
         sumSigmas+=1/myBAM->myInput.errorSigma.at(i);
@@ -276,7 +277,7 @@ void creatorWindow::sendResults(){
     dmittel.setNum(dav);
     dmittel2.setNum(dav2);
 
-    text+="Average:\t" + mittel + "  +/-  " + dmittel + "  +/-  " + dmittel2;
+   // text+="Average:\t" + mittel + "  +/-  " + dmittel + "  +/-  " + dmittel2;
 
     //system("clear");
     qDebug() << "Energy\t\tValue\t\tError stat\t\tsys";
